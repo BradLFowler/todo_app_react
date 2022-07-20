@@ -3,31 +3,42 @@ import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
 
     this.state = {
       isClicked: false,
-      inputValue: "",
-      listOfTodos: []
+      listOfTodos: [],
+      text: ""
     }
   }
-
+  
   handleClick = () => {
     this.state.isClicked ? 
       this.setState({isClicked: false }) :
       this.setState({isClicked: true })
   }
 
-  handleChange = (event) => {
-    this.setState({inputValue: event.target.value})
+  handleChange = (e) => {
+    this.setState({text: e.target.value})
   }
 
-  handleSubmit = (event) => {
-    event.preventDefault()
-    this.setState({listOfTodos: [...this.state.listOfTodos, this.state.inputValue]})
-    this.setState({inputValue: ""})
+  handleSubmit = (e) => {
+    e.preventDefault()
+    this.setState({listOfTodos: [...this.state.listOfTodos, this.state.text]})
+    this.setState({text: ""})
   }
+  
+  handleRemoveTodo = index => this.deleteItem(index)
+
+  deleteItem = (index) => {
+    let objectCopy = [...this.state.listOfTodos]
+    objectCopy.splice(index, 1)
+    this.setState({listOfTodos: [...objectCopy]})
+  }
+
+
+  
 
   render() {
     return (
@@ -35,25 +46,21 @@ class App extends Component {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <form onSubmit={this.handleSubmit}>
-            <input type="text" value={this.state.inputValue} onChange={this.handleChange}>
+            <input type="text" value={this.state.text} onChange={this.handleChange}>
             </input>
             <button type="submit">Submit Here</button>
           </form>
           <ol>{this.state.listOfTodos.map((todo, index) => {
-            return <li key={index}>{todo}</li>
-          })}</ol>
+            return <li key={index}>
+              {todo}
+              <button onClick={() => this.handleRemoveTodo(index)}>Delete</button>
+            </li>
+          })}
+          </ol>
           <button onClick={this.handleClick}>Click Me</button>
           <p>
             {this.state.isClicked ? "true" : "false"}
           </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
         </header>
       </div>
     );
