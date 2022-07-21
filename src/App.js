@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import TodoCard from './TodoCard';
 import logo from './logo.svg';
 import './App.css';
 
@@ -28,17 +29,13 @@ class App extends Component {
     this.setState({listOfTodos: [...this.state.listOfTodos, this.state.text]})
     this.setState({text: ""})
   }
-  
-  handleRemoveTodo = index => this.deleteItem(index)
 
   deleteItem = (index) => {
-    let objectCopy = [...this.state.listOfTodos]
-    objectCopy.splice(index, 1)
-    this.setState({listOfTodos: [...objectCopy]})
+    console.log("was clicked")
+    let todosCopy = [...this.state.listOfTodos]
+    todosCopy.splice(index, 1)
+    this.setState({listOfTodos: [...todosCopy]})
   }
-
-
-  
 
   render() {
     return (
@@ -51,10 +48,7 @@ class App extends Component {
             <button type="submit">Submit Here</button>
           </form>
           <ol>{this.state.listOfTodos.map((todo, index) => {
-            return <li key={index}>
-              {todo}
-              <button onClick={() => this.handleRemoveTodo(index)}>Delete</button>
-            </li>
+            return <TodoCard key={index} title={todo} index={index} handleRemoveTodo={index => this.deleteItem(index)}/>
           })}
           </ol>
           <button onClick={this.handleClick}>Click Me</button>
