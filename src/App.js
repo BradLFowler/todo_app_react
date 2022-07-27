@@ -8,17 +8,12 @@ class App extends Component {
     super(props)
 
     this.state = {
-      isClicked: false,
       listOfTodos: [],
-      text: ""
+      text: "Add or Edit or Set Status",
+      todoStatus: ["red", "yellow", "green"]
     }
   }
   
-  handleClick = () => {
-    this.state.isClicked ? 
-      this.setState({isClicked: false }) :
-      this.setState({isClicked: true })
-  }
 
   handleChange = (e) => {
     this.setState({text: e.target.value})
@@ -27,11 +22,24 @@ class App extends Component {
   handleSubmit = (e) => {
     e.preventDefault()
     this.setState({listOfTodos: [...this.state.listOfTodos, this.state.text]})
-    this.setState({text: ""})
+    this.setState({text: "Add or Edit or Set Status"})
+  }
+
+  handleEdit = (index) => {
+    let todosCopy = [...this.state.listOfTodos]
+    todosCopy[index] = this.state.text
+    this.setState({listOfTodos: [...todosCopy]})
+    this.setState({text: "Add or Edit or Set Status"})
+  }
+
+  handleStatus = (index) => {
+    if(this.state.text = this.state.todoStatus[0]) {
+      [index].className = {color: this.state.todoStatus[0]}
+    }
+    this.setState({text: "Add or Edit or Set Status"})
   }
 
   deleteItem = (index) => {
-    console.log("was clicked")
     let todosCopy = [...this.state.listOfTodos]
     todosCopy.splice(index, 1)
     this.setState({listOfTodos: [...todosCopy]})
@@ -43,18 +51,14 @@ class App extends Component {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <form onSubmit={this.handleSubmit}>
-            <input type="text" value={this.state.text} onChange={this.handleChange}>
-            </input>
+            <input type="text" value={this.state.text} onChange={this.handleChange} />
             <button type="submit">Submit Here</button>
           </form>
           <ol>{this.state.listOfTodos.map((todo, index) => {
-            return <TodoCard key={index} title={todo} index={index} handleRemoveTodo={index => this.deleteItem(index)}/>
+            return <TodoCard key={index} title={todo} index={index} handleStatus={(e) => this.handleStatus(index)} 
+            handleEdit={() => this.handleEdit(index)} handleRemoveTodo={index => this.deleteItem(index)}/>
           })}
           </ol>
-          <button onClick={this.handleClick}>Click Me</button>
-          <p>
-            {this.state.isClicked ? "true" : "false"}
-          </p>
         </header>
       </div>
     );

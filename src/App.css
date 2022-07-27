@@ -36,3 +36,11 @@
     transform: rotate(360deg);
   }
 }
+
+button {
+  margin-left: 20px;
+}
+
+.todo {
+  color: white;
+}
